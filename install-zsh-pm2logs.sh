@@ -100,7 +100,7 @@ success ".zshrc written"
 # 6. .p10k.zsh — fetched directly from GitHub
 # =============================================================================
 info "Downloading .p10k.zsh..."
-P10K_URL="https://raw.githubusercontent.com/calebv2/ZSH/main/.p10k.zsh"
+P10K_URL="https://raw.githubusercontent.com/calebv2/ZSH/main/p10k.zsh"
 if curl -fsSL "$P10K_URL" -o "${TARGET_HOME}/.p10k.zsh"; then
     success ".p10k.zsh downloaded"
 else
