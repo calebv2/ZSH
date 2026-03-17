@@ -6,7 +6,7 @@
 # =============================================================================
 set -e
 
-INSTALLER_URL="https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/main/install-zsh-pm2logs.sh"
+INSTALLER_URL="https://raw.githubusercontent.com/calebv2/ZSH/main/install-zsh-pm2logs.sh"
 
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; NC='\033[0m'
 
