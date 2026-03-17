@@ -2,7 +2,7 @@
 # =============================================================================
 # ZSH + PM2Logs Environment Installer
 # Target: Ubuntu/Debian LXC (tested on Ubuntu 24.04 Noble)
-# Installs: zsh, Oh My Zsh, Powerlevel10k, plugins, p10k config, ccze, pm2logs
+# Installs: zsh, Oh My Zsh, Powerlevel10k, plugins, p10k config, ccze, Node.js, PM2, pm2logs
 # Run as: root
 # =============================================================================
 set -e
@@ -427,6 +427,26 @@ chsh -s "$ZSH_BIN" "$TARGET_USER" 2>/dev/null || \
 success "Default shell set to zsh"
 
 # =============================================================================
+# 9. Node.js + PM2
+# =============================================================================
+if command -v pm2 &>/dev/null; then
+    warn "PM2 already installed ($(pm2 --version)) — skipping"
+else
+    info "Installing Node.js (LTS) + PM2..."
+    # Use NodeSource LTS setup script
+    if ! command -v node &>/dev/null; then
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - &>/dev/null
+        apt-get install -y -q nodejs
+        success "Node.js $(node -v) installed"
+    else
+        warn "Node.js already present ($(node -v)) — skipping Node install"
+    fi
+    npm install -g pm2 --quiet
+    pm2 startup systemd -u root --hp /root &>/dev/null || true
+    success "PM2 $(pm2 --version) installed and startup configured"
+fi
+
+# =============================================================================
 # Done
 # =============================================================================
 echo ""
@@ -439,9 +459,9 @@ echo "    ✓ zsh + Oh My Zsh"
 echo "    ✓ Powerlevel10k + zsh-autosuggestions + zsh-syntax-highlighting"
 echo "    ✓ .zshrc + .p10k.zsh"
 echo "    ✓ ccze"
+echo "    ✓ Node.js + PM2"
 echo "    ✓ pm2logs → /usr/local/bin/pm2logs"
 echo ""
 echo "  Next step:  exec zsh"
 echo ""
 echo -e "${YELLOW}  Note: terminal needs a Nerd Font for Powerlevel10k glyphs.${NC}"
-echo -e "${YELLOW}  Run 'p10k configure' to customize your prompt.${NC}"
